@@ -1,4 +1,5 @@
 const campoTarefa = document.getElementById("campo-tarefa");
+const campoPrazo = document.getElementById("campo-prazo");
 const botaoAdicionar = document.getElementById("botao-adicionar");
 const listaTarefas = document.getElementById("lista-tarefa");
 const contadorTarefas = document.getElementById("contador-tarefas");
@@ -8,6 +9,7 @@ let tarefas = [];
 
 function adicionarTarefa() {
     const texto = campoTarefa.value.trim();
+    const prazo = campoPrazo ? campoPrazo.value : "";
 
     if (texto === "") {
         alert("Digite uma tarefa!");
@@ -16,11 +18,14 @@ function adicionarTarefa() {
 
     const tarefa = {
         nome: texto,
-        concluida: false
+        prazo: prazo,
+        concluida: false,
+        bloqueada: false
     };
 
     tarefas.push(tarefa);
     campoTarefa.value = "";
+    campoPrazo.value = "";
 
     mostrarTarefas();
 }
@@ -32,11 +37,34 @@ function mostrarTarefas() {
         const item = document.createElement("li");
         item.className = "item-tarefa";
 
+        const conteudoTarefa = document.createElement("div");
+        conteudoTarefa.className = "conteudo-tarefa";
+
         const texto = document.createElement("span");
         texto.textContent = tarefa.nome;
 
         if (tarefa.concluida) {
             texto.classList.add("concluida");
+        }
+
+        conteudoTarefa.appendChild(texto);
+
+        if (tarefa.prazo) {
+            const smallPrazo = document.createElement("small");
+            smallPrazo.className = "prazo-tarefa";
+
+            const partes = tarefa.prazo.split("-");
+            if (partes.length === 3) {
+                smallPrazo.textContent = `Prazo: ${partes[2]}/${partes[1]}/${partes[0]}`;
+            } else {
+                smallPrazo.textContent = `Prazo: ${tarefa.prazo}`;
+            }
+
+            if (tarefa.concluida) {
+                smallPrazo.classList.add("concluida");
+            }
+
+            conteudoTarefa.appendChild(smallPrazo);
         }
 
         const botoes = document.createElement("div");
@@ -52,20 +80,46 @@ function mostrarTarefas() {
             mostrarTarefas();
         });
 
+        const botaoBloquear = document.createElement("button");
+        botaoBloquear.className = "botao-bloquear";
+        if (tarefa.bloqueada) {
+            botaoBloquear.innerHTML = '<i class="fa-solid fa-lock"></i>';
+            botaoBloquear.title = "Desbloquear exclusão";
+            botaoBloquear.classList.add("bloqueado");
+        } else {
+            botaoBloquear.innerHTML = '<i class="fa-solid fa-lock-open"></i>';
+            botaoBloquear.title = "Bloquear exclusão";
+        }
+
+        botaoBloquear.addEventListener("click", function() {
+            tarefas[indice].bloqueada = !tarefas[indice].bloqueada;
+            mostrarTarefas();
+        });
+
         const botaoExcluir = document.createElement("button");
         botaoExcluir.innerHTML = '<i class="fa-solid fa-trash"></i>';
         botaoExcluir.className = "botao-excluir";
         botaoExcluir.title = "Excluir tarefa";
 
+        if (tarefa.bloqueada) {
+            botaoExcluir.disabled = true;
+            botaoExcluir.classList.add("desabilitado");
+        }
+
         botaoExcluir.addEventListener("click", function() {
+            if (tarefas[indice].bloqueada) {
+                alert("Esta tarefa está bloqueada e não pode ser apagada!");
+                return;
+            }
             tarefas.splice(indice, 1);
             mostrarTarefas();
         });
 
         botoes.appendChild(botaoConcluir);
+        botoes.appendChild(botaoBloquear);
         botoes.appendChild(botaoExcluir);
 
-        item.appendChild(texto);
+        item.appendChild(conteudoTarefa);
         item.appendChild(botoes);
 
         listaTarefas.appendChild(item);

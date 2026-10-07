@@ -5,7 +5,17 @@ const listaTarefas = document.getElementById("lista-tarefa");
 const contadorTarefas = document.getElementById("contador-tarefas");
 const botaoTema = document.getElementById("botao-alternar-tema");
 
-let tarefas = [];
+let tarefas = JSON.parse(localStorage.getItem("tarefas")) || [];
+
+const temaSalvo = localStorage.getItem("tema");
+if (temaSalvo === "escuro") {
+    document.body.classList.add("tema-escuro");
+    const icone = botaoTema.querySelector("i");
+    if (icone) icone.className = "fa-solid fa-sun";
+}
+function salvarNoLocalStorage() {
+    localStorage.setItem("tarefas", JSON.stringify(tarefas));
+}
 
 function adicionarTarefa() {
     const texto = campoTarefa.value.trim();
@@ -27,6 +37,7 @@ function adicionarTarefa() {
     campoTarefa.value = "";
     campoPrazo.value = "";
 
+    salvarNoLocalStorage();
     mostrarTarefas();
 }
 
@@ -77,6 +88,7 @@ function mostrarTarefas() {
 
         botaoConcluir.addEventListener("click", function() {
             tarefas[indice].concluida = !tarefas[indice].concluida;
+            salvarNoLocalStorage();
             mostrarTarefas();
         });
 
@@ -93,6 +105,7 @@ function mostrarTarefas() {
 
         botaoBloquear.addEventListener("click", function() {
             tarefas[indice].bloqueada = !tarefas[indice].bloqueada;
+            salvarNoLocalStorage();
             mostrarTarefas();
         });
 
@@ -112,6 +125,7 @@ function mostrarTarefas() {
                 return;
             }
             tarefas.splice(indice, 1);
+            salvarNoLocalStorage();
             mostrarTarefas();
         });
 
@@ -146,7 +160,11 @@ botaoTema.addEventListener("click", function() {
 
     if (document.body.classList.contains("tema-escuro")) {
         icone.className = "fa-solid fa-sun";
+        localStorage.setItem("tema", "escuro");
     } else {
         icone.className = "fa-solid fa-moon";
+        localStorage.setItem("tema", "claro");
     }
 });
+
+mostrarTarefas();

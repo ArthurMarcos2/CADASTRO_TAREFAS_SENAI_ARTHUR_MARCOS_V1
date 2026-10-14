@@ -14,6 +14,9 @@
         <header class="cabecalho-aplicacao">
             <img src="IMG_20250807_190318_705.jpg">
             <h1>MINHAS TAREFAS</h1>
+            <button class="botao-icone" id="botao-ajuda" title="Funcionalidades">
+                    <i class="fa-solid fa-circle-question"></i>
+            </button>
             <button class="botao-icone" id="botao-alternar-tema">
                 <i class="fa-solid fa-moon"></i>
             </button>
@@ -27,10 +30,36 @@
         </div>
         <ul class="lista-tarefa" id="lista-tarefa">
 
+        
+
         </ul>
         <footer class="rodape-aplicacao">
             <span id="contador-tarefas">0 tarefas na lista</span>
         </footer>
+    </div>
+
+    <div id="modal-ajuda" class="modal">
+        <div class="conteudo-modal">
+            <span class="botao-fechar-modal">&times;</span>
+            <h2><i class="fa-solid"></i> Funcionalidades do Site</h2>
+            
+            <div class="lista-funcionalidades">
+                <div class="item-funcionalidade">
+                    <h3><i class="fa-solid fa-plus"></i> Adicionar Tarefa</h3>
+                    <p>Escreva o nome da tarefa e escolha um prazo para adicionar à sua lista.</p>
+                </div>
+
+                <div class="item-funcionalidade">
+                    <h3><i class="fa-solid fa-lock"></i> Bloquear Exclusão</h3>
+                    <p>Clique no cadeado para evitar que a tarefa seja apagada acidentalmente.</p>
+                </div>
+
+                <div class="item-funcionalidade">
+                    <h3><i class="fa-solid fa-moon"></i> Modo Escuro</h3>
+                    <p>Clique na lua/sol no cabeçalho para alternar entre o tema claro e escuro.</p>
+                </div>
+            </div>
+        </div>
     </div>
 
 

@@ -167,4 +167,22 @@ botaoTema.addEventListener("click", function() {
     }
 });
 
+const modalAjuda = document.getElementById("modal-ajuda");
+const botaoAjuda = document.getElementById("botao-ajuda");
+const botaoFecharModal = document.querySelector(".botao-fechar-modal");
+
+botaoAjuda.addEventListener("click", function() {
+    modalAjuda.style.display = "flex";
+});
+
+botaoFecharModal.addEventListener("click", function() {
+    modalAjuda.style.display = "none";
+});
+
+window.addEventListener("click", function(event) {
+    if (event.target === modalAjuda) {
+        modalAjuda.style.display = "none";
+    }
+});
+
 mostrarTarefas();
